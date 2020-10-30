@@ -7,8 +7,11 @@ interface SettingsOptions{
 
 class Settings {
   applyDamage: boolean;
+
   removeTargetsPre: boolean;
+
   removeRargetsPost: boolean;
+
   init() {
     this.registerSetting('applyDamage', { name: 'Apply damage automatically', default: true });
     this.registerSetting('removeTargetsPre', { name: 'Remove targets before an attack', default: true });

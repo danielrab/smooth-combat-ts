@@ -30,11 +30,11 @@ async function safeUseWeapon(item) {
   if (targetingActive) return ui.notifications.warn('resolve queued targeting first');
 
   const modifiers = {
-    //@ts-ignore
+    // @ts-ignore
     advantage: event.altKey,
-    //@ts-ignore
+    // @ts-ignore
     disadvantage: event.ctrlKey,
-    //@ts-ignore
+    // @ts-ignore
     versatile: event.shiftKey,
   };
 

@@ -14,7 +14,6 @@ import settings from './settings.js';
 function clearTargets() {
     game.user.targets.forEach((token) => token.setTarget(false));
 }
-Token;
 function currentTargets() {
     return Array.from(game.user.targets);
 }

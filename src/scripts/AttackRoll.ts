@@ -1,7 +1,8 @@
 class AttackRollHandler {
   roll: Roll;
+
   target: Token;
-  c: Control
+
   constructor(roll: Roll, target: Token) {
     this.roll = roll;
     this.target = target;
@@ -38,5 +39,6 @@ export default async function attackRoll(item, target: Token, options) {
     fastForward: true,
     chatMessage: false,
   });
+
   return new AttackRollHandler(roll, target);
 }
