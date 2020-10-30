@@ -1,23 +1,21 @@
 {
-  "name": "foundry-typescript-template",
-  "title": "Typescript Template",
-  "description": "", 
+  "name": "smooth-combat",
+  "title": "Smooth Combat",
+  "description": "combat enhancements for 5e", 
   "authors": [
     {
-      "name": "spacemandev",
-      "discord": "spacemandev#6256"
+      "name": "danielrab",
+      "discord": "danielrab#7070"
     }
   ],
-  "version": "0.0.1",
-  "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion": "0.7.2",
+  "version": "0.0.3-alpha",
+  "minimumCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "0.7.5",
   "url": "",
   "manifest": "",
   "download": "",
   "type": "module",
   "includes": [
-    "./assets/**",
-    "./lang/**",
     "./scripts/**",
     "./styles/**",
     "./templates/**",
@@ -39,16 +37,11 @@
     }
   ],
   "esmodules": [
-    "scripts/module.js"
+    "scripts/module.js",
+    "scripts/handlebars-setup.js",
+    "scripts/monkey-patches.js"
   ],
   "styles": [
     "styles/module.css"
-  ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
   ]
 }
