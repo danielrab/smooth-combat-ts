@@ -3,6 +3,7 @@ import settings from './settings.js';
 
 class DamageRollHandler {
   parts: Array<DamageRollPartHandler>
+
   constructor(parts) {
     this.parts = parts;
   }

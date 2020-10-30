@@ -1,6 +1,8 @@
 export class DamageRollPartHandler {
   roll: Roll;
+
   type: string;
+
   constructor(roll, type) {
     this.roll = roll;
     this.type = type;

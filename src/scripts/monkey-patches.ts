@@ -36,15 +36,21 @@ function fixedPhysical(array) {
   return res;
 }
 
-Object.defineProperty(Actor.prototype, 'vulnerabilities', { get() {
-  return fixedPhysical(this.data.data.traits.dv.value);
-} });
-Object.defineProperty(Actor.prototype, 'resistances', { get() {
-  return fixedPhysical(this.data.data.traits.dr.value);
-} });
-Object.defineProperty(Actor.prototype, 'immuities', { get() {
-  return fixedPhysical(this.data.data.traits.di.value);
-} });
+Object.defineProperty(Actor.prototype, 'vulnerabilities', {
+  get() {
+    return fixedPhysical(this.data.data.traits.dv.value);
+  },
+});
+Object.defineProperty(Actor.prototype, 'resistances', {
+  get() {
+    return fixedPhysical(this.data.data.traits.dr.value);
+  },
+});
+Object.defineProperty(Actor.prototype, 'immuities', {
+  get() {
+    return fixedPhysical(this.data.data.traits.di.value);
+  },
+});
 
 Actor.prototype.vulnerable = function (damageType): boolean {
   return this.vulnerabilities.includes(damageType);
@@ -64,7 +70,9 @@ Actor.prototype.damageMultiplier = function (damageType) {
   return res;
 };
 
-Object.defineProperty(Actor.prototype, 'ac', { get() {
-  return fixedPhysical(this.data.data.attributes.ac.value);
-} });
+Object.defineProperty(Actor.prototype, 'ac', {
+  get() {
+    return fixedPhysical(this.data.data.attributes.ac.value);
+  },
+});
 // #endregion
