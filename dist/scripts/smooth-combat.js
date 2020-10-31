@@ -8,26 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import ensureTargets from './targeting.js';
-import attackResultHTML from './html-generation.js';
-import attackRoll from './AttackRoll.js';
-import damageRoll from './DamageRoll.js';
+import { attackRoll } from './AttackRoll.js';
+import { damageRoll } from './DamageRoll.js';
 import settings from './settings.js';
+import AttackResult from './AttackResult.js';
 let itemRollOG;
 let targetingActive = false;
 function useItem(item, modifiers, target) {
     return __awaiter(this, void 0, void 0, function* () {
         const attackRollResult = yield attackRoll(item, target, modifiers);
-        const damageRollResult = yield damageRoll(item, modifiers.versatile, attackRollResult.critical);
+        const damageRollResult = yield damageRoll(item.getRollData(), modifiers.versatile, attackRollResult.critical);
         if (attackRollResult.hits) {
             yield damageRollResult.apply(target);
         }
-        return {
-            attackRoll: attackRollResult,
-            damageRoll: damageRollResult,
-            target,
-            item,
-            actor: item.actor,
-        };
+        return new AttackResult(attackRollResult, damageRollResult, item, target);
     });
 }
 function safeUseWeapon(item) {
@@ -51,7 +45,7 @@ function safeUseWeapon(item) {
         yield Promise.all(targets.map((target) => __awaiter(this, void 0, void 0, function* () {
             return ChatMessage.create({
                 sound: 'sounds/dice.wav',
-                content: yield attackResultHTML(yield useItem(item, modifiers, target)),
+                content: yield (yield useItem(item, modifiers, target)).attackResultHTML(),
             });
         })));
         return true;

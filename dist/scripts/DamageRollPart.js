@@ -22,11 +22,11 @@ export class DamageRollPartHandler {
         return Math.floor(target.actor.damageMultiplier(this.type) * this.total);
     }
 }
-export function DamageRollPart(item, [formula, type], critical) {
+export function DamageRollPart(rollData, [formula, type], critical) {
     return __awaiter(this, void 0, void 0, function* () {
         const roll = yield game.dnd5e.dice.damageRoll({
             parts: [formula],
-            data: item.getRollData(),
+            data: rollData,
             critical,
             fastForward: true,
             chatMessage: false,

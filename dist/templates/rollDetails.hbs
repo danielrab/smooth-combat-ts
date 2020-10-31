@@ -1,7 +1,7 @@
 <div class="smooth-combat-roll-details">
   {{#each terms}}
     {{#ifObject this}}
-    {{#when this.results.length 'gt' 1}} ( {{/when}}
+      {{#when this.results.length 'gt' 1}} ( {{/when}}
       {{#each this.results}}
         <div class="smooth-combat-die d{{../this.faces}} {{#if this.discarded}}discarded{{/if}}" title="d{{../this.faces}}">
           {{this.result}}

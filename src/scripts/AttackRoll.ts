@@ -1,6 +1,5 @@
-class AttackRollHandler {
+export class AttackRollHandler {
   roll: Roll;
-
   target: Token;
 
   constructor(roll: Roll, target: Token) {
@@ -33,7 +32,7 @@ class AttackRollHandler {
   }
 }
 
-export default async function attackRoll(item, target: Token, options) {
+export async function attackRoll(item, target: Token, options) {
   const roll = await item.rollAttack({
     ...options,
     fastForward: true,

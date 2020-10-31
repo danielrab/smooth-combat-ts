@@ -1,9 +1,8 @@
 export class DamageRollPartHandler {
   roll: Roll;
-
   type: string;
 
-  constructor(roll, type) {
+  constructor(roll: Roll, type: string) {
     this.roll = roll;
     this.type = type;
   }
@@ -16,15 +15,19 @@ export class DamageRollPartHandler {
     return this.roll._formula;
   }
 
-  getDamage(target) {
+  getDamage(target: Token) {
     return Math.floor(target.actor.damageMultiplier(this.type) * this.total);
   }
 }
 
-export async function DamageRollPart(item, [formula, type], critical) {
+export async function DamageRollPart(
+  rollData: ItemRollData,
+  [formula, type]: [string, string],
+  critical: boolean,
+) {
   const roll = await game.dnd5e.dice.damageRoll({
     parts: [formula],
-    data: item.getRollData(),
+    data: rollData,
     critical,
     fastForward: true,
     chatMessage: false,

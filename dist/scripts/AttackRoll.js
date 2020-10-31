@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-class AttackRollHandler {
+export class AttackRollHandler {
     constructor(roll, target) {
         this.roll = roll;
         this.target = target;
@@ -31,7 +31,7 @@ class AttackRollHandler {
         return this.die.results[0].result <= this.die.options.fumble;
     }
 }
-export default function attackRoll(item, target, options) {
+export function attackRoll(item, target, options) {
     return __awaiter(this, void 0, void 0, function* () {
         const roll = yield item.rollAttack(Object.assign(Object.assign({}, options), { fastForward: true, chatMessage: false }));
         return new AttackRollHandler(roll, target);

@@ -19,6 +19,7 @@
     "./scripts/**",
     "./styles/**",
     "./templates/**",
+    "./icons/**",
     "./module.json",
     "./README.md"
   ],
@@ -37,11 +38,11 @@
     }
   ],
   "esmodules": [
-    "scripts/module.js",
+    "scripts/smooth-combat.js",
     "scripts/handlebars-setup.js",
     "scripts/monkey-patches.js"
   ],
   "styles": [
-    "styles/module.css"
+    "styles/smooth-combat.css"
   ]
 }

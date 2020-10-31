@@ -30,10 +30,9 @@ export function unpatchTargeting() {
 // #endregion
 
 // #region actor
-function fixedPhysical(array) {
-  let res = Array.from(array);
-  if (res.includes('physical')) res = res.concat('bludgeoning', 'piercing', 'slashing');
-  return res;
+function fixedPhysical(array: string[]) {
+  if (array.includes('physical')) return array.concat('bludgeoning', 'piercing', 'slashing');
+  return Array.from(array);
 }
 
 Object.defineProperty(Actor.prototype, 'vulnerabilities', {
@@ -72,7 +71,7 @@ Actor.prototype.damageMultiplier = function (damageType) {
 
 Object.defineProperty(Actor.prototype, 'ac', {
   get() {
-    return fixedPhysical(this.data.data.attributes.ac.value);
+    return this.data.data.attributes.ac.value;
   },
 });
 // #endregion

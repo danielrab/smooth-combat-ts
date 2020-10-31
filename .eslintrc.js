@@ -25,8 +25,10 @@ module.exports = {
     'import/no-unresolved': 'off',
     'no-restricted-globals': 'off',
     'no-param-reassign': 'off',
+    'lines-between-class-members': 'off',
   },
   globals: {
+    ItemRollData: 'readonly',
     AudioHelper: 'readonly',
     Collection: 'readonly',
     Hooks: 'readonly',

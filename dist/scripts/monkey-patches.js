@@ -25,20 +25,25 @@ export function unpatchTargeting() {
 // #endregion
 // #region actor
 function fixedPhysical(array) {
-    let res = Array.from(array);
-    if (res.includes('physical'))
-        res = res.concat('bludgeoning', 'piercing', 'slashing');
-    return res;
+    if (array.includes('physical'))
+        return array.concat('bludgeoning', 'piercing', 'slashing');
+    return Array.from(array);
 }
-Object.defineProperty(Actor.prototype, 'vulnerabilities', { get() {
+Object.defineProperty(Actor.prototype, 'vulnerabilities', {
+    get() {
         return fixedPhysical(this.data.data.traits.dv.value);
-    } });
-Object.defineProperty(Actor.prototype, 'resistances', { get() {
+    },
+});
+Object.defineProperty(Actor.prototype, 'resistances', {
+    get() {
         return fixedPhysical(this.data.data.traits.dr.value);
-    } });
-Object.defineProperty(Actor.prototype, 'immuities', { get() {
+    },
+});
+Object.defineProperty(Actor.prototype, 'immuities', {
+    get() {
         return fixedPhysical(this.data.data.traits.di.value);
-    } });
+    },
+});
 Actor.prototype.vulnerable = function (damageType) {
     return this.vulnerabilities.includes(damageType);
 };
@@ -58,7 +63,9 @@ Actor.prototype.damageMultiplier = function (damageType) {
         res *= 2;
     return res;
 };
-Object.defineProperty(Actor.prototype, 'ac', { get() {
-        return fixedPhysical(this.data.data.attributes.ac.value);
-    } });
+Object.defineProperty(Actor.prototype, 'ac', {
+    get() {
+        return this.data.data.attributes.ac.value;
+    },
+});
 // #endregion

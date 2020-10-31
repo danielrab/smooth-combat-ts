@@ -1,32 +1,26 @@
 import ensureTargets from './targeting.js';
-import attackResultHTML from './html-generation.js';
-import attackRoll from './AttackRoll.js';
-import damageRoll from './DamageRoll.js';
+import { attackRoll } from './AttackRoll.js';
+import { damageRoll } from './DamageRoll.js';
 import settings from './settings.js';
+import AttackResult from './AttackResult.js';
 
 let itemRollOG;
 let targetingActive = false;
 
-async function useItem(item, modifiers, target) {
+async function useItem(item: Item, modifiers, target: Token) {
   const attackRollResult = await attackRoll(item, target, modifiers);
 
   const damageRollResult = await damageRoll(
-    item, modifiers.versatile, attackRollResult.critical,
+    item.getRollData(), modifiers.versatile, attackRollResult.critical,
   );
 
   if (attackRollResult.hits) {
     await damageRollResult.apply(target);
   }
-  return {
-    attackRoll: attackRollResult,
-    damageRoll: damageRollResult,
-    target,
-    item,
-    actor: item.actor,
-  };
+  return new AttackResult(attackRollResult, damageRollResult, item, target);
 }
 
-async function safeUseWeapon(item) {
+async function safeUseWeapon(item: Item) {
   if (targetingActive) return ui.notifications.warn('resolve queued targeting first');
 
   const modifiers = {
@@ -49,7 +43,7 @@ async function safeUseWeapon(item) {
   await Promise.all(targets.map(
     async (target) => ChatMessage.create({
       sound: 'sounds/dice.wav',
-      content: await attackResultHTML(await useItem(item, modifiers, target)),
+      content: await (await useItem(item, modifiers, target)).attackResultHTML(),
     }),
   ));
 

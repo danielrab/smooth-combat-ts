@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { DamageRollPart } from './DamageRollPart.js';
 import settings from './settings.js';
-class DamageRollHandler {
+export class DamageRollHandler {
     constructor(parts) {
         this.parts = parts;
     }
@@ -20,12 +20,13 @@ class DamageRollHandler {
         return damage;
     }
 }
-export default function damageRoll(item, versatile, critical) {
+export function damageRoll(rollData, versatile, critical) {
     return __awaiter(this, void 0, void 0, function* () {
-        const damageParts = item.data.data.damage.parts;
-        const rollParts = yield Promise.all(damageParts.map((part) => __awaiter(this, void 0, void 0, function* () { return DamageRollPart(item, part, critical); })));
-        if (versatile && item.data.data.damage.versatile) {
-            const versatileRollPart = yield DamageRollPart(item, [item.data.data.damage.versatile, damageParts[0][1]], critical);
+        const damageParts = rollData.item.damage.parts;
+        const rollParts = yield Promise.all(damageParts.map((part) => __awaiter(this, void 0, void 0, function* () { return DamageRollPart(rollData, part, critical); })));
+        if (versatile && rollData.item.damage.versatile) {
+            const part = [rollData.item.damage.versatile, damageParts[0][1]];
+            const versatileRollPart = yield DamageRollPart(rollData, part, critical);
             rollParts[0] = versatileRollPart;
         }
         return new DamageRollHandler(rollParts);

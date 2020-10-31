@@ -7,9 +7,7 @@ interface SettingsOptions{
 
 class Settings {
   applyDamage: boolean;
-
   removeTargetsPre: boolean;
-
   removeRargetsPost: boolean;
 
   init() {
@@ -18,7 +16,7 @@ class Settings {
     this.registerSetting('removeRargetsPost', { name: 'Remove targets after an attack', default: true });
   }
 
-  registerSetting(internalName, options: SettingsOptions) {
+  registerSetting(internalName: string, options: SettingsOptions) {
     game.settings.register(moduleName, internalName, {
       name: 'Unnamed setting, contact danielrab on discord or GitHub',
       scope: 'world',

@@ -19,7 +19,7 @@
   color: #000;
   font-weight: bold;
   text-align: center;
-  background-image: url("../icons/d20-grey.svg");
+  background-image: url("../assets/d20-grey.svg");
 }
 
 .smooth-combat-die.discarded {
