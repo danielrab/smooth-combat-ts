@@ -13,10 +13,8 @@ export class DamageRollHandler {
         this.parts = parts;
     }
     query() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return $('<div>')
-                .append(yield Promise.all(this.parts.map((part) => part.query())));
-        });
+        return $('<div>')
+            .append(this.parts.map((part) => part.query()));
     }
 }
 export function damageRoll(rollData, versatile, critical, actor) {

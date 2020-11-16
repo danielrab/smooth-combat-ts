@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import switchTool from './util.js';
 import { patchTargeting, unpatchTargeting } from './monkey-patches.js';
-import settings from './settings.js';
+import { settings } from './settings.js';
 function clearTargets() {
     game.user.targets.forEach((token) => token.setTarget(false));
 }
@@ -40,7 +40,7 @@ export default function ensureTargets(amount) {
             return [];
         }
         if (game.user.targets.size === amount) {
-            return Array.from(game.user.targets);
+            return Array.from(game.user.targets).map((token) => token.actor);
         }
         if (settings.removeTargetsPre)
             clearTargets();
@@ -54,7 +54,7 @@ export default function ensureTargets(amount) {
                 switchTool(startingTool);
                 if (settings.removeRargetsPost)
                     clearTargets();
-                resolve(result);
+                resolve(result ? result.map((token) => token.actor) : null);
             }
             let manualTargeting = false;
             const dialog = new Dialog({

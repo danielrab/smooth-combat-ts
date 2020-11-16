@@ -1,26 +1,20 @@
-export class AttackRollHandler {
-  roll: Roll;
-  target: Token;
+import RollHandler from './Roll.js';
 
-  constructor(roll: Roll, target: Token) {
-    this.roll = roll;
+export class AttackRollHandler extends RollHandler {
+  roll: Roll;
+  target: Actor;
+
+  constructor(roll: Roll, target: Actor) {
+    super(roll);
     this.target = target;
   }
 
   get hits() {
-    return this.total >= this.target.actor.ac && !this.fumble;
+    return this.total >= this.target.ac && !this.fumble;
   }
 
   get die() {
     return this.roll.terms[0];
-  }
-
-  get total() {
-    return this.roll.total;
-  }
-
-  get formula() {
-    return this.roll._formula;
   }
 
   get critical() {
@@ -30,9 +24,13 @@ export class AttackRollHandler {
   get fumble() {
     return this.die.results[0].result <= this.die.options.fumble;
   }
+
+  get totalString() {
+    return String(this.total);
+  }
 }
 
-export async function attackRoll(item, target: Token, options) {
+export async function attackRoll(item, target: Actor, options) {
   const roll = await item.rollAttack({
     ...options,
     fastForward: true,

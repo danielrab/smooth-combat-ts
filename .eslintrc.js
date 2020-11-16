@@ -28,6 +28,7 @@ module.exports = {
     'lines-between-class-members': 'off',
   },
   globals: {
+    $: 'readonly',
     ItemRollData: 'readonly',
     AudioHelper: 'readonly',
     Collection: 'readonly',

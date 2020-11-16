@@ -27,7 +27,7 @@ export class AttackResult {
                 res.append(`${this.attackRoll.hits ? 'hits' : 'misses'} ${this.target.name} with ${this.item.name}`);
             if (!this.attackRoll || this.attackRoll.hits) {
                 res.append('<br>dealing');
-                res.append(yield this.damageRoll.query());
+                res.append(this.damageRoll.query());
             }
             return res;
         });

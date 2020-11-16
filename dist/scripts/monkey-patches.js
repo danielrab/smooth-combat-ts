@@ -54,6 +54,10 @@ Actor.prototype.immune = function (damageType) {
     return this.immuities.includes(damageType);
 };
 Actor.prototype.damageMultiplier = function (damageType) {
+    if (!damageType)
+        return 0;
+    if (damageType === 'healing')
+        return -1;
     let res = 1;
     if (this.immune(damageType))
         res = 0;

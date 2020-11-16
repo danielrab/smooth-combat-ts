@@ -1,4 +1,4 @@
-const moduleName = 'smooth-combat';
+export const moduleName = 'smooth-combat';
 class Settings {
     init() {
         this.registerSetting('applyDamage', { name: 'Apply damage automatically', default: true });
@@ -17,4 +17,4 @@ class Settings {
         });
     }
 }
-export default new Settings();
+export const settings = new Settings();
