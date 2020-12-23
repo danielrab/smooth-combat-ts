@@ -1,4 +1,5 @@
 import RollHandler from './Roll.js';
+import ActorHelper from '../helpers/actor.js';
 
 export class AttackRollHandler extends RollHandler {
   roll: Roll;
@@ -10,7 +11,7 @@ export class AttackRollHandler extends RollHandler {
   }
 
   get hits() {
-    return this.total >= this.target.ac && !this.fumble;
+    return this.total >= new ActorHelper(this.target).ac && !this.fumble;
   }
 
   get die() {

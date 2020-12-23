@@ -20,12 +20,12 @@ export default abstract class RollHandler {
       .append(this.roll.terms.map((term) => {
         if (typeof term === 'object') {
           return $('<div>')
-            .append(term.results.length > 1 ? '(' : '')
+            .append(term.results.length > 1 ? $('<div>(</div>').addClass('smooth-combat-die-bracket') : '')
             .append(term.results.map((result) => $('<div>')
               .addClass(`smooth-combat-die d${term.faces} ${result.discarded ? 'discarded' : ''}`)
               .prop('title', `d${term.faces}`)
               .append(result.result)))
-            .append(term.results.length > 1 ? '(' : '');
+            .append(term.results.length > 1 ? $('<div>)</div>').addClass('smooth-combat-die-bracket') : '');
         }
         return term;
       }));

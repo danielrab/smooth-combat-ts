@@ -1,8 +1,11 @@
-import ensureTargets from './targeting.js';
+import ensureTargets from './helpers/targeting.js';
 import { attackRoll } from './rolls/AttackRoll.js';
 import { damageRoll } from './rolls/DamageRoll.js';
 import { settings, moduleName } from './settings.js';
 import { AttackResult, AttackFlag } from './rolls/AttackResult.js';
+import { applyPermanetPatches } from './helpers/patches.js';
+import onItemHotbarDrop from './helpers/macro-generation.js';
+import ActorHelper from './helpers/actor.js';
 
 let itemRollOG;
 let templateFromItemOG;
@@ -91,42 +94,11 @@ async function newItemRoll(options = {}) {
   return true;
 }
 
-function changeMacro(script, itemData) {
-  const defineActor = itemData.tokenId ? `let the_actor = game.actors.tokens["${itemData.tokenId}"];
-if (!the_actor) the_actor = game.actors.get("${itemData.actorId}");` : `let the_actor = game.actors.get("${itemData.actorId}");`;
-
-  script.command = `${defineActor}
-
-let item;
-if (the_actor) item = the_actor.items.get("${itemData.data._id}");
-
-if (item) {
-  if ( item.data.type === "spell" ) the_actor.useSpell(item);
-  else item.roll();
-}
-else game.dnd5e.rollItemMacro("${itemData.data.name}")`;
-}
-
-function onItemHotbarDrop(hotbar, item) {
-  if (item.type !== 'Item') return;
-  if (!['weapon', 'spell'].includes(item.data.type)) return;
-  Hooks.once('preCreateMacro', (script) => changeMacro(script, item));
-}
-
-Hooks.on('hotbarDrop', onItemHotbarDrop);
-
 function processMessageFlags(message: ChatMessage) {
   if (!game.user.isGM || message.getFlag(moduleName, 'processed')) return;
   const attackFlag: AttackFlag = message.getFlag(moduleName, 'attack');
   if (attackFlag && settings.applyDamage) {
-    const { damage, hits } = attackFlag;
-    const target = game.actors.get(attackFlag.target);
-    if (hits) {
-      damage.forEach((value) => {
-        if (value.type === 'temphp') target.update({ 'data.attributes.hp.temp': Math.max(value.total, target.data.data.attributes.hp.temp) });
-        else target.applyDamage(value.total, target.damageMultiplier(value.type));
-      });
-    }
+    ActorHelper.applyAttackFlag(attackFlag);
   }
   message.setFlag(moduleName, 'processed', true);
 }
@@ -137,8 +109,6 @@ function processTemplateFlags(scene: Scene, template: MeasuredTemplate, options,
 }
 
 Hooks.on('init', () => {
-  settings.init();
-
   itemRollOG = game.dnd5e.entities.Item5e.prototype.roll;
   game.dnd5e.entities.Item5e.prototype.roll = newItemRoll;
 
@@ -154,3 +124,20 @@ Hooks.on('init', () => {
 
 Hooks.on('renderChatMessage', processMessageFlags);
 Hooks.on('createMeasuredTemplate', processTemplateFlags);
+
+function init() {
+  // the first thing called after system initialization
+  settings.init();
+  applyPermanetPatches();
+  if (settings.alternativeMacro) Hooks.on('hotbarDrop', onItemHotbarDrop);
+}
+function setup() {
+  // called after the system loads templates and localizations, but before any rendering
+}
+function onReady() {
+  // called when foundy is ready
+}
+
+Hooks.once('init', init);
+Hooks.once('ready', onReady);
+Hooks.once('setup', setup);

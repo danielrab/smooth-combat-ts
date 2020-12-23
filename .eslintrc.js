@@ -26,6 +26,8 @@ module.exports = {
     'no-restricted-globals': 'off',
     'no-param-reassign': 'off',
     'lines-between-class-members': 'off',
+    'max-len': 'off',
+    'no-restricted-syntax': 'off',
   },
   globals: {
     $: 'readonly',

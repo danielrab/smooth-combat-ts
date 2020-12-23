@@ -8,11 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import switchTool from './util.js';
-import { patchTargeting, unpatchTargeting } from './monkey-patches.js';
-import { settings } from './settings.js';
+import { switchTool } from './misc.js';
+import { patchTargeting, unpatchTargeting } from './patches.js';
+import { settings } from '../settings.js';
 function clearTargets() {
-    game.user.targets.forEach((token) => token.setTarget(false));
+    for (const token of game.user.targets)
+        token.setTarget(false);
 }
 function currentTargets() {
     return Array.from(game.user.targets);

@@ -37,8 +37,7 @@
     }
   ],
   "esmodules": [
-    "scripts/smooth-combat.js",
-    "scripts/monkey-patches.js"
+    "scripts/smooth-combat.js"
   ],
   "styles": [
     "styles/smooth-combat.css"

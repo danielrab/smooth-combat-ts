@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
-import switchTool from './util.js';
-import { patchTargeting, unpatchTargeting } from './monkey-patches.js';
-import { settings } from './settings.js';
+import { switchTool } from './misc.js';
+import { patchTargeting, unpatchTargeting } from './patches.js';
+import { settings } from '../settings.js';
 
 function clearTargets() {
-  game.user.targets.forEach((token) => token.setTarget(false));
+  for (const token of game.user.targets) token.setTarget(false);
 }
 
 function currentTargets() {
