@@ -14,5 +14,3 @@ export function unpatchTargeting() {
 // #endregion
 // #region actor
 // #endregion
-export function applyPermanetPatches() {
-}

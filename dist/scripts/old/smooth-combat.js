@@ -12,14 +12,13 @@ import { attackRoll } from './rolls/AttackRoll.js';
 import { damageRoll } from './rolls/DamageRoll.js';
 import { settings, moduleName } from './settings.js';
 import { AttackResult } from './rolls/AttackResult.js';
-import { applyPermanetPatches } from './helpers/patches.js';
 import onItemHotbarDrop from './helpers/macro-generation.js';
 import ActorHelper from './helpers/actor.js';
 let itemRollOG;
-let templateFromItemOG;
 let targetingActive = false;
-function useItem(item, modifiers, target, doAttack) {
+function useItem(item, modifiers, target, options) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { doAttack } = options;
         const attackRollResult = doAttack ? yield attackRoll(item, target, modifiers) : null;
         const damageRollResult = yield damageRoll(item.getRollData(), modifiers.versatile, attackRollResult === null || attackRollResult === void 0 ? void 0 : attackRollResult.critical, item.actor);
         return new AttackResult(attackRollResult, damageRollResult, item, target);
@@ -40,9 +39,12 @@ function newItemRoll(options = {}) {
         yield itemRollOG.call(this, options);
         targetingActive = true;
         let targets = null;
-        let doAttack = true;
         let canHandle = true;
-        let isSave = false;
+        const rollOptions = {
+            doAttack: ['mwak', 'rwak', 'msak', 'rsak'].includes(this.data.data.actionType),
+            isSave: this.data.data.actionType === 'save',
+            canHandle: ['mwak', 'rwak', 'msak', 'rsak', 'save', 'heal'].includes(this.data.data.actionType),
+        };
         switch (this.data.data.actionType) {
             case 'mwak':
             case 'rwak':
@@ -50,11 +52,8 @@ function newItemRoll(options = {}) {
                 break;
             case 'heal':
             case 'utility':
-                doAttack = false;
                 break;
             case 'save':
-                doAttack = false;
-                isSave = true;
                 break;
             case 'msak':
             case 'rsak':
@@ -81,12 +80,10 @@ function newItemRoll(options = {}) {
             }
         }
         targetingActive = false;
-        if (isSave)
-            canHandle = false;
         if (!canHandle)
             return false; // do nothing if aborted
         yield Promise.all(targets.map((target) => __awaiter(this, void 0, void 0, function* () {
-            const attackResult = yield useItem(this, modifiers, target, doAttack);
+            const attackResult = yield useItem(this, modifiers, target, rollOptions);
             const flags = {};
             flags[moduleName] = { attack: attackResult.flags, processed: false };
             ChatMessage.create({
@@ -107,39 +104,13 @@ function processMessageFlags(message) {
     }
     message.setFlag(moduleName, 'processed', true);
 }
-function processTemplateFlags(scene, template, options, userId) {
-    if (userId !== game.user.id)
-        return;
-    const { item } = template.flags[moduleName];
-}
-Hooks.on('init', () => {
-    itemRollOG = game.dnd5e.entities.Item5e.prototype.roll;
-    game.dnd5e.entities.Item5e.prototype.roll = newItemRoll;
-    templateFromItemOG = game.dnd5e.canvas.AbilityTemplate.fromItem;
-    function abilityTemplateReplacement(item) {
-        const template = templateFromItemOG.call(this, item);
-        if (!template.data.flags)
-            template.data.flags = {};
-        template.data.flags[moduleName] = { item };
-        return template;
-    }
-    game.dnd5e.canvas.AbilityTemplate.fromItem = abilityTemplateReplacement;
-});
 Hooks.on('renderChatMessage', processMessageFlags);
-Hooks.on('createMeasuredTemplate', processTemplateFlags);
 function init() {
     // the first thing called after system initialization
     settings.init();
-    applyPermanetPatches();
     if (settings.alternativeMacro)
         Hooks.on('hotbarDrop', onItemHotbarDrop);
-}
-function setup() {
-    // called after the system loads templates and localizations, but before any rendering
-}
-function onReady() {
-    // called when foundy is ready
+    itemRollOG = game.dnd5e.entities.Item5e.prototype.roll;
+    game.dnd5e.entities.Item5e.prototype.roll = newItemRoll;
 }
 Hooks.once('init', init);
-Hooks.once('ready', onReady);
-Hooks.once('setup', setup);

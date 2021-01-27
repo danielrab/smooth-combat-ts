@@ -37,9 +37,10 @@
     }
   ],
   "esmodules": [
-    "scripts/smooth-combat.js"
+    "scripts/main.js"
   ],
   "styles": [
     "styles/smooth-combat.css"
-  ]
+  ],
+  "socket": true
 }
